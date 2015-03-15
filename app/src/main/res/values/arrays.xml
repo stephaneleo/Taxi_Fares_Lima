@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array
+        name="poi_array">
+        <item>Select a point of interest...</item>
+        <item>@string/museo_larco</item>
+        <item>@string/museo_oro</item>
+        <item>@string/parque_kennedy</item>
+        <item>@string/barranco</item>
+        <item>@string/aeropuerto</item>
+        <item>@string/plaza_san_martin</item>
+        <item>@string/larcomar</item>
+    </string-array>
+
+    <string-array name="museo_larco_hashmap">
+        <item>@string/museo_oro</item>
+        <item>12-14</item>
+        <item>@string/parque_kennedy</item>
+        <item>18-22</item>
+        <item>@string/barranco</item>
+        <item>24-26</item>
+        <item>@string/aeropuerto</item>
+        <item>44-46</item>
+        <item>@string/plaza_san_martin</item>
+        <item>24-26</item>
+        <item>@string/larcomar</item>
+        <item>24-26</item>
+    </string-array>
+
+
+
+</resources>
