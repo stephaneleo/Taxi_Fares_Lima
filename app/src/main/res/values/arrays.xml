@@ -10,9 +10,14 @@
         <item>@string/aeropuerto</item>
         <item>@string/plaza_san_martin</item>
         <item>@string/larcomar</item>
+        <item>@string/parque_aguas</item>
+        <item>@string/huaca_pucllana</item>
+        <item>@string/huaca_huallamarca</item>
     </string-array>
 
     <string-array name="museo_larco_hashmap">
+        <item>@string/museo_larco</item>
+        <item>0</item>
         <item>@string/museo_oro</item>
         <item>12-14</item>
         <item>@string/parque_kennedy</item>
@@ -25,6 +30,12 @@
         <item>24-26</item>
         <item>@string/larcomar</item>
         <item>24-26</item>
+        <item>@string/parque_aguas</item>
+        <item>34-36</item>
+        <item>@string/huaca_pucllana</item>
+        <item>14-16</item>
+        <item>@string/huaca_huallamarca</item>
+        <item>14-16</item>
     </string-array>
 
 

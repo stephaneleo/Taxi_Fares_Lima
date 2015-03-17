@@ -15,11 +15,12 @@
         android:layout_height="wrap_content"
         android:id="@+id/origin_spinner" />
 
-    <EditText
+    <AutoCompleteTextView
+        android:id="@+id/autoCompleteTextView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/address_hint"
-        android:id="@+id/origin_address"/>
+        android:hint="Enter the starting point" >
+    </AutoCompleteTextView>
 
     <TextView android:text="@string/destination_title" android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -31,11 +32,13 @@
         android:layout_height="wrap_content"
         android:id="@+id/destination_spinner" />
 
-    <EditText
+    <AutoCompleteTextView
+        android:id="@+id/autoCompleteTextView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/address_hint"
-        android:id="@+id/destination_address"/>
+        android:hint="Enter the destination" >
+    </AutoCompleteTextView>
+
 
     <Button
         android:layout_width="match_parent"

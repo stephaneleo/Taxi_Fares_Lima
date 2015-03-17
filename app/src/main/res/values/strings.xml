@@ -13,6 +13,10 @@
     <string name="aeropuerto">Aeropuerto</string>
     <string name="plaza_san_martin">Plaza San Martín</string>
     <string name="larcomar">Larcomar</string>
+    <string name="parque_aguas">Parque de las Aguas</string>
+    <string name="huaca_pucllana">Huaca Pucllana</string>
+    <string name="huaca_huallamarca">Huaca Huallamarca</string>
+
     <string name="normal_rate">The rate is ...</string>
     <string name="get_rate_button_text">Calculate the normal rate</string>
 
