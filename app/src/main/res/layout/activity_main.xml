@@ -10,11 +10,21 @@
         android:textSize="30sp"
         android:textStyle="bold"/>
 
-    <Spinner
+    <com.example.android.taxi_fares_lima.MySpinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/origin_spinner" />
 
+    <!-- Clickable title -->
+    <TextView  android:id="@+id/toggler1"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="Or enter an address..."
+        android:clickable="true"
+        android:onClick="toggle_contents"
+        android:tag="1"/>
+
+    <!--content to hide/show -->
     <AutoCompleteTextView
         android:id="@+id/autoCompleteTextView1"
         android:layout_width="match_parent"
@@ -27,10 +37,19 @@
         android:textSize="30sp"
         android:textStyle="bold"/>
 
-    <Spinner
+    <com.example.android.taxi_fares_lima.MySpinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/destination_spinner" />
+
+    <!-- Clickable title -->
+    <TextView  android:id="@+id/toggler2"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="Or enter an address..."
+        android:clickable="true"
+        android:onClick="toggle_contents"
+        android:tag="2"/>
 
     <AutoCompleteTextView
         android:id="@+id/autoCompleteTextView2"
@@ -45,11 +64,5 @@
         android:layout_height="wrap_content"
         android:text="@string/get_rate_button_text"
         android:id="@+id/get_rate_button" />
-
-    <TextView android:text="@string/normal_rate" android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="40sp"
-        android:textStyle="bold"
-        android:id="@+id/normal_rate"/>
 
 </LinearLayout>

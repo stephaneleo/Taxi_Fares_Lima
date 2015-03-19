@@ -15,6 +15,21 @@
         <item>@string/huaca_huallamarca</item>
     </string-array>
 
+    <string-array
+        name="address_array">
+        <item>No address selected</item>
+        <item>Museo Larco, Avenida Simón Bolivar, Pueblo Libre</item>
+        <item>Museo de Oro del Peru, Santiago de Surco, Lima</item>
+        <item>Parque Kennedy, Miraflores, Lima</item>
+        <item>Parque Municipal, Barranco, Lima</item>
+        <item>Aeropuerto Internacional Jorge Chávez, Callao, Lima</item>
+        <item>Plaza San Martin, Lima</item>
+        <item>Larcomar, Malecón de la Reserva, Lima</item>
+        <item>Reserva Park, Madre de Dios, Lima</item>
+        <item>Huaca Pucllana, Lima</item>
+        <item>Huaca Huallamarca, Avenida Nicolas de Rivera, San Isidro, Lima</item>
+    </string-array>
+
     <string-array name="museo_larco_hashmap">
         <item>@string/museo_larco</item>
         <item>0</item>
