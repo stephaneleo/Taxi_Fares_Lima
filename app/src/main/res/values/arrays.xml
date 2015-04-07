@@ -2,7 +2,7 @@
 <resources>
     <string-array
         name="poi_array">
-        <item>Select a point of interest...</item>
+        <item>@string/poi_selector</item>
         <item>@string/museo_larco</item>
         <item>@string/museo_oro</item>
         <item>@string/parque_kennedy</item>
@@ -34,25 +34,24 @@
         <item>@string/museo_larco</item>
         <item>0</item>
         <item>@string/museo_oro</item>
-        <item>12-14</item>
+        <item>34,16.3,36</item>
         <item>@string/parque_kennedy</item>
-        <item>18-22</item>
+        <item>20,9.7,26</item>
         <item>@string/barranco</item>
-        <item>24-26</item>
+        <item>32,15.8,28</item>
         <item>@string/aeropuerto</item>
-        <item>44-46</item>
+        <item>17,8.5,18</item>
         <item>@string/plaza_san_martin</item>
-        <item>24-26</item>
+        <item>17,6.8,14</item>
         <item>@string/larcomar</item>
-        <item>24-26</item>
+        <item>24,12.3,25</item>
         <item>@string/parque_aguas</item>
-        <item>34-36</item>
+        <item>10,4.9,18</item>
         <item>@string/huaca_pucllana</item>
-        <item>14-16</item>
+        <item>16,8.0,25</item>
         <item>@string/huaca_huallamarca</item>
-        <item>14-16</item>
+        <item>12,5.8,18</item>
     </string-array>
-
 
 
 </resources>

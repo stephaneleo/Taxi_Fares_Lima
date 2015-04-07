@@ -1,68 +1,116 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity" android:orientation="vertical">
+    android:layout_height="match_parent"
+    android:padding="@dimen/activity_padding"
+    tools:context=".MainActivity" android:orientation="vertical"
+    android:background="@color/blue">
 
-    <TextView android:text="@string/origin_title" android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:textStyle="bold"/>
+    <!-- Dummy item to prevent AutoCompleteTextView from receiving focus -->
+    <LinearLayout
+        android:focusable="true" android:focusableInTouchMode="true"
+        android:layout_width="0px" android:layout_height="0px"/>
 
-    <com.example.android.taxi_fares_lima.MySpinner
+    <!-- box1 -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/origin_spinner" />
+        android:orientation="horizontal"
+        >
 
-    <!-- Clickable title -->
-    <TextView  android:id="@+id/toggler1"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:text="Or enter an address..."
-        android:clickable="true"
-        android:onClick="toggle_contents"
-        android:tag="1"/>
+        <TextView android:text="@string/origin_title" android:layout_width="@dimen/left_column_width"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/text_size_big"
+            android:textStyle="bold"
+            android:gravity="center_horizontal"
+            android:textColor="@color/orange" />
 
-    <!--content to hide/show -->
-    <AutoCompleteTextView
-        android:id="@+id/autoCompleteTextView1"
+        <!-- box1b -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="@dimen/margin_bottom_boxes">
+
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/et_height"
+                android:id="@+id/origin_spinner"
+                android:layout_marginBottom="@dimen/margin_bottom_first_inner_box"
+                />
+
+
+            <AutoCompleteTextView
+                android:id="@+id/autoCompleteTextView1"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/et_height"
+                android:textColorHint="@color/lightgrey"
+                android:hint="@string/address_hint"
+                android:textSize="@dimen/text_size_standard"
+                android:textColor="@color/lightgrey">
+            </AutoCompleteTextView>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:padding="@dimen/activity_padding"
+        android:background="@color/orange"/>
+
+    <!-- box2 -->
+    <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    >
+
+
+    <TextView android:text="@string/destination_title" android:layout_width="@dimen/left_column_width"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/text_size_big"
+            android:textStyle="bold"
+            android:gravity="center_horizontal"
+            android:textColor="@color/orange" />
+
+    <!-- box2b -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter the starting point" >
-    </AutoCompleteTextView>
+        android:orientation="vertical"
+        android:layout_marginBottom="@dimen/margin_bottom_boxes">
 
-    <TextView android:text="@string/destination_title" android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:textStyle="bold"/>
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/et_height"
+            android:id="@+id/destination_spinner"
+            android:layout_marginBottom="@dimen/margin_bottom_first_inner_box" />
 
-    <com.example.android.taxi_fares_lima.MySpinner
+
+        <AutoCompleteTextView
+            android:id="@+id/autoCompleteTextView2"
+            android:textColorHint="@color/lightgrey"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/et_height"
+            android:hint="@string/address_hint"
+            android:textSize="@dimen/text_size_standard"
+            android:textColor="@color/lightgrey">
+        </AutoCompleteTextView>
+    </LinearLayout>
+    </LinearLayout>
+
+
+
+<Button
+        android:padding="20dp"
+        android:textSize="@dimen/text_size_big"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/destination_spinner" />
-
-    <!-- Clickable title -->
-    <TextView  android:id="@+id/toggler2"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:text="Or enter an address..."
-        android:clickable="true"
-        android:onClick="toggle_contents"
-        android:tag="2"/>
-
-    <AutoCompleteTextView
-        android:id="@+id/autoCompleteTextView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Enter the destination" >
-    </AutoCompleteTextView>
-
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:textStyle="bold"
         android:text="@string/get_rate_button_text"
-        android:id="@+id/get_rate_button" />
+        android:id="@+id/get_rate_button"
+        android:gravity="center"
+        android:background="@color/blue"
+        android:textColor="@color/orange"/>
 
 </LinearLayout>

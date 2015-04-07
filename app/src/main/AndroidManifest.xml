@@ -20,8 +20,12 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ResponseScreen"></activity>
-
+        <activity android:name=".ResponseScreen"
+            android:parentActivityName=".MainActivity">
+        </activity>
+        <provider
+            android:authorities="com.example.android.taxi_fares_lima.app"
+            android:name=".data.TaxiProvider" />
     </application>
 
 </manifest>
