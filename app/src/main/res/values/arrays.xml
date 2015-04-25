@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <string-array
+        name="currencylistentries">
+        <item>Peruvian Soles</item>
+        <item>US Dollars</item>
+        <item>Euros</item>
+    </string-array>
+
+    <string-array
+        name="currencylistvalues">
+        <item>PEN</item>
+        <item>USD</item>
+        <item>EUR</item>
+    </string-array>
+
+
+
+
+
+
     <string-array
         name="poi_array">
         <item>@string/poi_selector</item>

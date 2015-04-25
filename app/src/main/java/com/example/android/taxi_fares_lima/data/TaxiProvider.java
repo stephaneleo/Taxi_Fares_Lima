@@ -13,12 +13,44 @@ public class TaxiProvider extends ContentProvider {
 
 
 
+    // Codes for the matcher
+    static final int POI = 100;
+    static final int POI_WITH_ID = 101;
+    static final int RATE = 200;
     // The URI Matcher used by this content provider.
     private static final UriMatcher MyUriMatcher = buildUriMatcher();
+    private static final SQLiteQueryBuilder MyQueryBuilder = new SQLiteQueryBuilder();
+    //poi._id = ?
+    private static final String sPoiSelection =
+            TaxiContract.PoiEntry.TABLE_NAME+
+                    "." + TaxiContract.PoiEntry._ID + " = ? ";
+    //rate.from_id = ? AND rate.to_id = ?
+    private static final String sRateSelection =
+            TaxiContract.RateEntry.TABLE_NAME+
+                    "." + TaxiContract.RateEntry.COLUMN_FROM_ID + " = ? AND " +
+                    TaxiContract.RateEntry.COLUMN_TO_ID + " = ? ";
     private DbHelper MyOpenHelper;
     private SQLiteDatabase db;
-    private static final SQLiteQueryBuilder MyQueryBuilder = new SQLiteQueryBuilder();
 
+    static UriMatcher buildUriMatcher() {
+        // I know what you're thinking.  Why create a UriMatcher when you can use regular
+        // expressions instead?  Because you're not crazy, that's why.
+
+        // All paths added to the UriMatcher have a corresponding code to return when a match is
+        // found.  The code passed into the constructor represents the code to return for the root
+        // URI.  It's common to use NO_MATCH as the code for this case.
+        final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
+        final String authority = TaxiContract.CONTENT_AUTHORITY;
+
+        // For each type of URI you want to add, create a corresponding code.
+        matcher.addURI(authority, TaxiContract.PATH_POI, POI);
+        matcher.addURI(authority, TaxiContract.PATH_POI + "/#", POI_WITH_ID);
+
+        matcher.addURI(authority, TaxiContract.PATH_RATE, RATE);
+
+
+        return matcher;
+    }
 
     //only gets created upon installation of the app
     @Override
@@ -29,24 +61,9 @@ public class TaxiProvider extends ContentProvider {
         return true;
     }
 
-    // Codes for the matcher
-    static final int POI = 100;
-    static final int POI_WITH_ID = 101;
-    static final int RATE = 200;
-
-    //poi._id = ?
-    private static final String sPoiSelection =
-            TaxiContract.PoiEntry.TABLE_NAME+
-                    "." + TaxiContract.PoiEntry._ID + " = ? ";
-
-    //rate.from_id = ? AND rate.to_id = ?
-    private static final String sRateSelection =
-            TaxiContract.RateEntry.TABLE_NAME+
-                    "." + TaxiContract.RateEntry.COLUMN_FROM_ID + " = ? AND " +
-                    TaxiContract.RateEntry.COLUMN_TO_ID + " = ? ";
-
     // query for poi by id
     private Cursor getPoiByID(Uri uri, String[] projection) {
+
 
         String ID = TaxiContract.PoiEntry.getIDSettingFromUri(uri);
 
@@ -83,7 +100,6 @@ public class TaxiProvider extends ContentProvider {
         );
     }
 
-
     @Override
     public String getType(Uri uri) {
         // Use the Uri Matcher to determine what kind of URI this is.
@@ -103,7 +119,6 @@ public class TaxiProvider extends ContentProvider {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
     }
-
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
@@ -156,7 +171,6 @@ public class TaxiProvider extends ContentProvider {
         retCursor.setNotificationUri(getContext().getContentResolver(), uri);
         return retCursor;
     }
-
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
@@ -238,7 +252,6 @@ public class TaxiProvider extends ContentProvider {
         return rowsUpdated;
     }
 
-
     @Override
     public int bulkInsert(Uri uri, ContentValues[] values) {
         final SQLiteDatabase db = MyOpenHelper.getWritableDatabase();
@@ -281,25 +294,5 @@ public class TaxiProvider extends ContentProvider {
             default:
                 return super.bulkInsert(uri, values);
         }
-    }
-
-    static UriMatcher buildUriMatcher() {
-        // I know what you're thinking.  Why create a UriMatcher when you can use regular
-        // expressions instead?  Because you're not crazy, that's why.
-
-        // All paths added to the UriMatcher have a corresponding code to return when a match is
-        // found.  The code passed into the constructor represents the code to return for the root
-        // URI.  It's common to use NO_MATCH as the code for this case.
-        final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
-        final String authority = TaxiContract.CONTENT_AUTHORITY;
-
-        // For each type of URI you want to add, create a corresponding code.
-        matcher.addURI(authority, TaxiContract.PATH_POI, POI);
-        matcher.addURI(authority, TaxiContract.PATH_POI + "/#", POI_WITH_ID);
-
-        matcher.addURI(authority, TaxiContract.PATH_RATE, RATE);
-
-
-        return matcher;
     }
 }

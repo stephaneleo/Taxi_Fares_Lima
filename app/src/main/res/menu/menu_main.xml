@@ -1,9 +1,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" tools:context=".MainActivity">
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" app:showAsAction="never" />
 
-    <item android:id="@+id/test_config" android:title="@string/test_config"
-        android:orderInCategory="200" app:showAsAction="never" />
+
+    <item android:id="@+id/action_settings" android:orderInCategory="100"
+        android:title="@string/action_settings" app:showAsAction="never" />
+
+    <item android:id="@+id/preferences"
+        android:title="Preferences"></item>
+
+    <item android:id="@+id/test_config" android:orderInCategory="200"
+        android:title="@string/test_config" app:showAsAction="never" />
 </menu>

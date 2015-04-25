@@ -3,13 +3,16 @@
     package="com.example.android.taxi_fares_lima" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
 
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme"
+        >
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
@@ -20,12 +23,18 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".ResponseScreen"
+        <activity android:name=".ResponseActivity"
             android:parentActivityName=".MainActivity">
         </activity>
+
+        <activity
+            android:name=".MyPreferenceActivity"
+            android:label="Preferences">
+        </activity>
+
         <provider
-            android:authorities="com.example.android.taxi_fares_lima.app"
-            android:name=".data.TaxiProvider" />
+            android:name=".data.TaxiProvider"
+            android:authorities="com.example.android.taxi_fares_lima.app" />
     </application>
 
 </manifest>

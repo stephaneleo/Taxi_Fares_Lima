@@ -2,7 +2,8 @@
 <resources>
 
     <color name="blue">#47d</color>
-    <color name="orange">#f60</color>
+    <color name="white">#fff</color>
+    <color name="red">#e8040a</color>
     <color name="lightgrey">#ddf</color>
     <color name="darkgrey">#aab</color>
     <color name="lightblue">#69e</color>

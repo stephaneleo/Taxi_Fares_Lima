@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- not used coz no headers -->
+
+<preference-headers
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <header android:fragment="com.example.android.taxi_fares_lima.MyPreferenceFragment"
+        android:summary="An example of some preferences."
+        android:title="Goto: Preference fragment" />
+
+</preference-headers>
