@@ -55,6 +55,9 @@ public class MainFragment extends Fragment implements AsyncResponse {
     static final int COLNR_POI_NAME_EN = 2;
     static final int COLNR_POI_ADDRESS = 3;
 
+    final static double DURATION_FACTOR = 1;
+
+
     private static final String API_KEY = "AIzaSyCHF6yn8iOPhT9G8LzcVaO9JO_1uD5ICvA";
     private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
     private static final String TYPE_AUTOCOMPLETE = "/autocomplete";
@@ -80,6 +83,7 @@ public class MainFragment extends Fragment implements AsyncResponse {
     private boolean origin_address_selected = false;
     private boolean destination_address_selected = false;
 
+    // method for address autocompletion
     public static ArrayList autocomplete(String input) {
         ArrayList resultList = null;
 
@@ -171,7 +175,7 @@ public class MainFragment extends Fragment implements AsyncResponse {
         {
             autoCompView1.setVisibility(View.GONE);
             autoCompView2.setVisibility(View.GONE);
-            Toast.makeText(myC, "Need internet connection for address option. Only points of interest available.", Toast.LENGTH_LONG).show();
+            Toast.makeText(myC, "Need internet connection to specify exact addresses.", Toast.LENGTH_LONG).show();
         }
 
 
@@ -194,7 +198,7 @@ public class MainFragment extends Fragment implements AsyncResponse {
                 setBackgrounds();
                 autoCompView1.clearFocus();
                 parent_layout.requestFocus();
-                Toast.makeText(myC, selection, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(myC, selection, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -210,7 +214,7 @@ public class MainFragment extends Fragment implements AsyncResponse {
                 setBackgrounds();
                 autoCompView2.clearFocus();
                 parent_layout.requestFocus();
-                Toast.makeText(myC, selection, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(myC, selection, Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -278,36 +282,48 @@ public class MainFragment extends Fragment implements AsyncResponse {
 
             if (origin_poi_selected && destination_poi_selected) {
 
-                String[] selectionArgs = new String[]{origin_selected_position, destination_selected_position};
-                Uri uri = TaxiContract.RateEntry.buildBasicRateUri();
 
-                Cursor cursor = myC.getContentResolver().query(
-                        uri,   // The content URI -> indicates which provider/db/table to use
-                        TaxiContract.RateEntry.COLUMNS,                        // The columns to return for each row
-                        null,                    // Selection criteria
-                        selectionArgs,                     // Selection criteria
-                        null);                        // The sort order for the returned rows
 
-                String rate_to_pass = null;
-                String distance_to_pass = null;
-                String duration_to_pass = null;
-                String from_to_pass = origin_spinner.getSelectedItem().toString();
-                String to_to_pass = destination_spinner.getSelectedItem().toString();
-
-                if (cursor.moveToFirst()){
-                    do{
-                        rate_to_pass = String.valueOf(cursor.getDouble(COLNR_RATE_RATE));
-                        distance_to_pass = String.valueOf(cursor.getDouble(COLNR_RATE_DIST));
-                        duration_to_pass = String.valueOf(cursor.getDouble(COLNR_RATE_DUR));
-
-                    }while(cursor.moveToNext());
+                if (origin_selected_position == destination_selected_position) {
+                    Toast.makeText(myC, "Select different points please...." , Toast.LENGTH_LONG).show();
                 }
-                cursor.close();
+
+                else {
+                    String[] selectionArgs;
+
+                    if (Integer.parseInt(destination_selected_position) > Integer.parseInt(origin_selected_position))
+                        {selectionArgs = new String[]{origin_selected_position, destination_selected_position};}
+                    else {selectionArgs = new String[]{destination_selected_position, origin_selected_position};}
+
+                    Uri uri = TaxiContract.RateEntry.buildBasicRateUri();
+
+                    Cursor cursor = myC.getContentResolver().query(
+                            uri,   // The content URI -> indicates which provider/db/table to use
+                            TaxiContract.RateEntry.COLUMNS,                        // The columns to return for each row
+                            null,                    // Selection criteria
+                            selectionArgs,                     // Selection criteria
+                            null);                        // The sort order for the returned rows
+
+                    String rate_to_pass = null;
+                    String distance_to_pass = null;
+                    String duration_to_pass = null;
+                    String from_to_pass = origin_spinner.getSelectedItem().toString();
+                    String to_to_pass = destination_spinner.getSelectedItem().toString();
+
+                    if (cursor.moveToFirst()) {
+                        do {
+                            rate_to_pass = String.valueOf(cursor.getDouble(COLNR_RATE_RATE));
+                            distance_to_pass = String.valueOf(cursor.getDouble(COLNR_RATE_DIST));
+                            duration_to_pass = String.valueOf(cursor.getDouble(COLNR_RATE_DUR));
+
+                        } while (cursor.moveToNext());
+                    }
+                    cursor.close();
 
 
-                // Send the event to the host activity if in 2 panes
-                mCallback.onCalculated(rate_to_pass, distance_to_pass, duration_to_pass, from_to_pass, to_to_pass);
-
+                    // Send the event to the host activity if in 2 panes
+                    mCallback.onCalculated(rate_to_pass, distance_to_pass, duration_to_pass, from_to_pass, to_to_pass);
+                }
 
             }
 
@@ -355,7 +371,7 @@ public class MainFragment extends Fragment implements AsyncResponse {
         }
     }
 
-    public void get_google_places(String from, String to) {
+    private void get_google_places(String from, String to) {
 
         String uri = Uri.parse(GMAPS_BASE)
                 .buildUpon()
@@ -369,7 +385,6 @@ public class MainFragment extends Fragment implements AsyncResponse {
         AsyncTaskIO IO_Getter = new AsyncTaskIO(new AsyncResponse() {
             @Override
             public void processFinish(String output) {
-                Log.w("jn", output);
                 parse_JSON_response(output);
 
                 // Send the event to the host activity if in 2 panes
@@ -381,7 +396,7 @@ public class MainFragment extends Fragment implements AsyncResponse {
 
     }
 
-    public void parse_JSON_response(String JSON_response) {
+    private void parse_JSON_response(String JSON_response) {
 
         try {
 
@@ -393,11 +408,13 @@ public class MainFragment extends Fragment implements AsyncResponse {
             from_used = temp.get("start_address").toString();
             to_used = temp.get("end_address").toString();
             String duration_parsed = temp.getJSONObject("duration").get("value").toString();
+            Log.w("dur received", duration_parsed);
             String distance_parsed = temp.getJSONObject("distance").get("value").toString();
             double distance_double = Double.parseDouble(distance_parsed) / 1000 ; //in km
-            double duration_double = Double.parseDouble(duration_parsed) * 1.25 / 60 ; //in min
+            double duration_double = Double.parseDouble(duration_parsed) * DURATION_FACTOR / 60 ; //in min
             distance = Double.toString(distance_double) ;
             duration = Double.toString(duration_double);
+
 
         } catch (JSONException e) {
             Log.e(LOG_TAG, "Cannot process JSON results", e);
@@ -420,12 +437,6 @@ public class MainFragment extends Fragment implements AsyncResponse {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            Log.w("Settings","Clicked");
-            return true;
-        }
 
         if (id == R.id.preferences) {
             Intent intent = new Intent(myC, MyPreferenceActivity.class);
@@ -452,6 +463,7 @@ public class MainFragment extends Fragment implements AsyncResponse {
         } else {destination_spinner.setBackgroundColor(getResources().getColor(R.color.white));}
     }
 
+    // get the points of interest from database table
     private List<String> getPoiList() {
 
         List<String> result = new ArrayList<String>();
@@ -480,6 +492,7 @@ public class MainFragment extends Fragment implements AsyncResponse {
         return result;
     }
 
+    // get the exact address given an id of a point of interest
     private String getAddressFromPoi(int index) {
 
         String result=null;
@@ -512,67 +525,68 @@ public class MainFragment extends Fragment implements AsyncResponse {
         outState.putBoolean("destination_address_selected", destination_address_selected);
     }
 
-    // MainActivity must implement this interface (to communicate data)
+
+    // MainActivity must implement this interface (to communicate data between main fragment and main activity)
     public interface OnCalculatedListener {
         public void onCalculated(String rate, String distance, String duration, String from, String to);
     }
 
-class GooglePlacesAutocompleteAdapter extends ArrayAdapter implements Filterable {
+    private class GooglePlacesAutocompleteAdapter extends ArrayAdapter implements Filterable {
 
-    private ArrayList<String> resultList;
+        private ArrayList<String> resultList;
 
-    public GooglePlacesAutocompleteAdapter(Context context, int textViewResourceId) {
-        super(context, textViewResourceId);
-        Log.w("", "GooglePlacesAutocompleteAdapter created");
+        public GooglePlacesAutocompleteAdapter(Context context, int textViewResourceId) {
+            super(context, textViewResourceId);
+            Log.w("", "GooglePlacesAutocompleteAdapter created");
 
-    }
+        }
 
-    @Override
-    public int getCount() {
-        Log.w("", "GooglePlacesAutocompleteAdapter getcount");
+        @Override
+        public int getCount() {
+            Log.w("", "GooglePlacesAutocompleteAdapter getcount");
 
-        return resultList.size();
+            return resultList.size();
 
-    }
+        }
 
-    @Override
-    public String getItem(int index) {
-        Log.w("", "GooglePlacesAutocompleteAdapter getitem");
+        @Override
+        public String getItem(int index) {
+            Log.w("", "GooglePlacesAutocompleteAdapter getitem");
 
-        return resultList.get(index);
-    }
+            return resultList.get(index);
+        }
 
-    @Override
-    public Filter getFilter() {
-        Filter filter = new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence constraint) {
-                FilterResults filterResults = new FilterResults();
-                if (constraint != null) {
-                    // Retrieve the autocomplete results.
-                    resultList = autocomplete(constraint.toString());
+        @Override
+        public Filter getFilter() {
+            Filter filter = new Filter() {
+                @Override
+                protected FilterResults performFiltering(CharSequence constraint) {
+                    FilterResults filterResults = new FilterResults();
+                    if (constraint != null) {
+                        // Retrieve the autocomplete results.
+                        resultList = autocomplete(constraint.toString());
 
-                    // Assign the data to the FilterResults
-                    filterResults.values = resultList;
-                    filterResults.count = resultList.size();
+                        // Assign the data to the FilterResults
+                        filterResults.values = resultList;
+                        filterResults.count = resultList.size();
+                    }
+                    return filterResults;
                 }
-                return filterResults;
-            }
 
-            @Override
-            protected void publishResults(CharSequence constraint, FilterResults results) {
-                Log.w("", "GooglePlacesAutocompleteAdapter publishresults");
+                @Override
+                protected void publishResults(CharSequence constraint, FilterResults results) {
+                    Log.w("", "GooglePlacesAutocompleteAdapter publishresults");
 
-                if (results != null && results.count > 0) {
-                    notifyDataSetChanged();
-                } else {
-                    notifyDataSetInvalidated();
+                    if (results != null && results.count > 0) {
+                        notifyDataSetChanged();
+                    } else {
+                        notifyDataSetInvalidated();
+                    }
                 }
-            }
-        };
-        return filter;
+            };
+            return filter;
+        }
     }
-}
 
 }
 

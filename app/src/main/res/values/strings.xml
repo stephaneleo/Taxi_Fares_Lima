@@ -24,6 +24,8 @@
     <string name="duration_header_string">Duration</string>
     <string name="distance_header_string">Distance</string>
     <string name="normal_rate_header_string">Rate</string>
+    <string name="min_rate_header_string">standard</string>
+    <string name="max_rate_header_string">rush hour - nighttime</string>
     <string name="duration_unit">min</string>
     <string name="distance_unit">km</string>
     <string name="rate_unit">Soles</string>

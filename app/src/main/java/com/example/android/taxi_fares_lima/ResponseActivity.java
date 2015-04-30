@@ -20,7 +20,7 @@ public class ResponseActivity extends ActionBarActivity {
 
         if (savedInstanceState == null) {
             // Create the detail fragment and add it to the activity
-            // using a fragment transaction.
+            // using a fragment transaction, passing the needed arguments.
 
             Bundle arguments = new Bundle();
             arguments.putString("rate", rate);

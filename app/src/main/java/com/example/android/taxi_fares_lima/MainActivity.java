@@ -3,7 +3,6 @@ package com.example.android.taxi_fares_lima;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.DisplayMetrics;
 import android.util.Log;
 
 
@@ -12,19 +11,11 @@ public class MainActivity extends ActionBarActivity implements MainFragment.OnCa
     private static final String DETAILFRAGMENT_TAG = "DFTAG_2_PANE";
     public boolean mTwoPane;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        DisplayMetrics metrics = getResources().getDisplayMetrics();
-
-        // jsut checking measures
-        float dpHeight = metrics.heightPixels / metrics.density;
-        float dpWidth = metrics.widthPixels / metrics.density;
-        Log.w("Height", Float.toString(dpHeight));
-        Log.w("Width", Float.toString(dpWidth));
-        Log.w("DPI", Float.toString(metrics.density));
 
         if (findViewById(R.id.response_container) != null) {
             // The detail container view will be present only in the large-screen layouts
@@ -48,23 +39,22 @@ public class MainActivity extends ActionBarActivity implements MainFragment.OnCa
 
         }
 
-        //MainFragment mainFragment =  ((MainFragment)getSupportFragmentManager()
-        //        .findFragmentById(R.id.fragment_main));
-        // mainFragment.setUseTodayLayout(!mTwoPane);  allows some boolean layout
     }
 
     public void onCalculated(String rate, String distance, String duration, String from, String to) {
         ResponseFragment resFrag = (ResponseFragment) getSupportFragmentManager().findFragmentByTag(DETAILFRAGMENT_TAG);
 
+
         if (resFrag != null) {
             // If article frag is available, we're in two-pane layout...
-            // Call a method in the ArticleFragment to update its content
+            // Call a method in the ResponseFragment to update its content
             resFrag.updateView(rate, distance, duration, from, to);
             Log.w("", "In two panes main activity - oncalculated received");
 
         }
 
         else {
+            // start Response activity
             Intent i = new Intent(this, ResponseActivity.class);
             Log.w("rr", rate + distance);
             i.putExtra("rate", rate);
