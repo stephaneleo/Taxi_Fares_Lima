@@ -3,7 +3,6 @@ package com.example.android.taxi_fares_lima;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 
 
 public class MainActivity extends ActionBarActivity implements MainFragment.OnCalculatedListener {
@@ -22,7 +21,6 @@ public class MainActivity extends ActionBarActivity implements MainFragment.OnCa
             // (res/layout-sw600dp). If this view is present, then the activity should be
             // in two-pane mode.
             mTwoPane = true;
-            Log.w("", "In two panes main activity");
             // In two-pane mode, show the detail view in this activity by
             // adding or replacing the detail fragment using a
             // fragment transaction.
@@ -33,10 +31,7 @@ public class MainActivity extends ActionBarActivity implements MainFragment.OnCa
                         .commit();
             }
         } else {
-            Log.w("", "In one pane main activity");
-
             mTwoPane = false;
-
         }
 
     }
@@ -49,22 +44,17 @@ public class MainActivity extends ActionBarActivity implements MainFragment.OnCa
             // If article frag is available, we're in two-pane layout...
             // Call a method in the ResponseFragment to update its content
             resFrag.updateView(rate, distance, duration, from, to);
-            Log.w("", "In two panes main activity - oncalculated received");
-
         }
 
         else {
             // start Response activity
             Intent i = new Intent(this, ResponseActivity.class);
-            Log.w("rr", rate + distance);
             i.putExtra("rate", rate);
             i.putExtra("distance", distance);
             i.putExtra("duration", duration);
             i.putExtra("from", from);
             i.putExtra("to", to);
             startActivity(i);
-            Log.w("", "In one pane main activity - oncalculated received");
-
         }
     };
 

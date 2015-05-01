@@ -37,12 +37,6 @@ public class ResponseActivity extends ActionBarActivity {
                     .commit();
         }
 
-
-
-
-
-
-
     }
 
 }

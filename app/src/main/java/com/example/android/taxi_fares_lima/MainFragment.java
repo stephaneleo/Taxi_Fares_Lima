@@ -38,6 +38,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 public class MainFragment extends Fragment implements AsyncResponse {
@@ -57,12 +58,12 @@ public class MainFragment extends Fragment implements AsyncResponse {
 
     final static double DURATION_FACTOR = 1;
 
+    final static String LOG_TAG = "MainFragment";
 
     private static final String API_KEY = "AIzaSyCHF6yn8iOPhT9G8LzcVaO9JO_1uD5ICvA";
     private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
     private static final String TYPE_AUTOCOMPLETE = "/autocomplete";
     private static final String OUT_JSON = "/json";
-    private static final String LOG_TAG = "TRYINGHARD";
     private static final String GMAPS_BASE = "http://maps.googleapis.com/maps/api/directions/json?";
 
     Spinner origin_spinner;
@@ -90,12 +91,10 @@ public class MainFragment extends Fragment implements AsyncResponse {
         HttpURLConnection conn = null;
         StringBuilder jsonResults = new StringBuilder();
         try {
-            Log.w("", "GooglePlacesAutocomplete building request");
-
             StringBuilder sb = new StringBuilder(PLACES_API_BASE + TYPE_AUTOCOMPLETE + OUT_JSON);
             sb.append("?key=" + API_KEY);
             sb.append("&components=country:pe");
-            sb.append("&location=-12.108880,-77.029276");
+            sb.append("&location=-12.108880,-77.029276"); //Lima coordinates
             sb.append("&radius=20000");
             sb.append("&input=" + URLEncoder.encode(input, "utf8"));
 
@@ -175,7 +174,8 @@ public class MainFragment extends Fragment implements AsyncResponse {
         {
             autoCompView1.setVisibility(View.GONE);
             autoCompView2.setVisibility(View.GONE);
-            Toast.makeText(myC, "Need internet connection to specify exact addresses.", Toast.LENGTH_LONG).show();
+            Toast.makeText(myC, getResources().getString(R.string.connection_toast), Toast.LENGTH_LONG).show();
+
         }
 
 
@@ -285,7 +285,7 @@ public class MainFragment extends Fragment implements AsyncResponse {
 
 
                 if (origin_selected_position == destination_selected_position) {
-                    Toast.makeText(myC, "Select different points please...." , Toast.LENGTH_LONG).show();
+                    Toast.makeText(myC, getResources().getString(R.string.diff_points_toast) , Toast.LENGTH_LONG).show();
                 }
 
                 else {
@@ -348,7 +348,7 @@ public class MainFragment extends Fragment implements AsyncResponse {
 
             else {
 
-                Toast.makeText(myC, "Select please...." , Toast.LENGTH_LONG).show();
+                Toast.makeText(myC, getResources().getString(R.string.select_toast) , Toast.LENGTH_LONG).show();
             }
 
         }
@@ -412,9 +412,8 @@ public class MainFragment extends Fragment implements AsyncResponse {
             String distance_parsed = temp.getJSONObject("distance").get("value").toString();
             double distance_double = Double.parseDouble(distance_parsed) / 1000 ; //in km
             double duration_double = Double.parseDouble(duration_parsed) * DURATION_FACTOR / 60 ; //in min
-            distance = Double.toString(distance_double) ;
-            duration = Double.toString(duration_double);
-
+            distance = String.format(Locale.ENGLISH, "%.2f", distance_double);
+            duration = String.format(Locale.ENGLISH, "%.2f", duration_double);
 
         } catch (JSONException e) {
             Log.e(LOG_TAG, "Cannot process JSON results", e);
@@ -447,8 +446,7 @@ public class MainFragment extends Fragment implements AsyncResponse {
     }
 
     private void setBackgrounds () {
-        Log.w("bools", Boolean.toString(origin_address_selected) + Boolean.toString(destination_address_selected)
-                + Boolean.toString(origin_poi_selected) + Boolean.toString(destination_poi_selected));
+
         if (origin_address_selected) {
             autoCompView1.setBackground(getResources().getDrawable(R.drawable.view_border));
         } else {autoCompView1.setBackgroundColor(getResources().getColor(R.color.white));}
@@ -480,12 +478,24 @@ public class MainFragment extends Fragment implements AsyncResponse {
 
         String poi_name = null;
 
-        if (cursor.moveToFirst()){
-            do{
-                poi_name = cursor.getString(COLNR_POI_NAME_ES);
-                result.add(poi_name);
+        String lan = Locale.getDefault().getLanguage();
 
-            }while(cursor.moveToNext());
+        if (lan.equals("es")) {
+            if (cursor.moveToFirst()) {
+                do {
+                    poi_name = cursor.getString(COLNR_POI_NAME_ES);
+                    result.add(poi_name);
+
+                } while (cursor.moveToNext());
+            }
+        } else {
+            if (cursor.moveToFirst()) {
+                do {
+                    poi_name = cursor.getString(COLNR_POI_NAME_EN);
+                    result.add(poi_name);
+
+                } while (cursor.moveToNext());
+            }
         }
 
         cursor.close();
@@ -496,7 +506,6 @@ public class MainFragment extends Fragment implements AsyncResponse {
     private String getAddressFromPoi(int index) {
 
         String result=null;
-        index = index ; //account for spinner's header
 
         Uri uri = TaxiContract.PoiEntry.buildPoiUri(index);
 
@@ -575,7 +584,6 @@ public class MainFragment extends Fragment implements AsyncResponse {
 
                 @Override
                 protected void publishResults(CharSequence constraint, FilterResults results) {
-                    Log.w("", "GooglePlacesAutocompleteAdapter publishresults");
 
                     if (results != null && results.count > 0) {
                         notifyDataSetChanged();

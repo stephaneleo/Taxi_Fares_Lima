@@ -3,9 +3,9 @@
 
     <string-array
         name="currencylistentries">
-        <item>Peruvian Soles</item>
-        <item>US Dollars</item>
-        <item>Euros</item>
+        <item>@string/PEN</item>
+        <item>@string/USD</item>
+        <item>@string/EUR</item>
     </string-array>
 
     <string-array
@@ -14,64 +14,5 @@
         <item>USD</item>
         <item>EUR</item>
     </string-array>
-
-
-
-
-
-
-    <string-array
-        name="poi_array">
-        <item>@string/poi_selector</item>
-        <item>@string/museo_larco</item>
-        <item>@string/museo_oro</item>
-        <item>@string/parque_kennedy</item>
-        <item>@string/barranco</item>
-        <item>@string/aeropuerto</item>
-        <item>@string/plaza_san_martin</item>
-        <item>@string/larcomar</item>
-        <item>@string/parque_aguas</item>
-        <item>@string/huaca_pucllana</item>
-        <item>@string/huaca_huallamarca</item>
-    </string-array>
-
-    <string-array
-        name="address_array">
-        <item>No address selected</item>
-        <item>Museo Larco, Avenida Simón Bolivar, Pueblo Libre</item>
-        <item>Museo de Oro del Peru, Santiago de Surco, Lima</item>
-        <item>Parque Kennedy, Miraflores, Lima</item>
-        <item>Parque Municipal, Barranco, Lima</item>
-        <item>Aeropuerto Internacional Jorge Chávez, Callao, Lima</item>
-        <item>Plaza San Martin, Lima</item>
-        <item>Larcomar, Malecón de la Reserva, Lima</item>
-        <item>Reserva Park, Madre de Dios, Lima</item>
-        <item>Huaca Pucllana, Lima</item>
-        <item>Huaca Huallamarca, Avenida Nicolas de Rivera, San Isidro, Lima</item>
-    </string-array>
-
-    <string-array name="museo_larco_hashmap">
-        <item>@string/museo_larco</item>
-        <item>0</item>
-        <item>@string/museo_oro</item>
-        <item>34,16.3,36</item>
-        <item>@string/parque_kennedy</item>
-        <item>20,9.7,26</item>
-        <item>@string/barranco</item>
-        <item>32,15.8,28</item>
-        <item>@string/aeropuerto</item>
-        <item>17,8.5,18</item>
-        <item>@string/plaza_san_martin</item>
-        <item>17,6.8,14</item>
-        <item>@string/larcomar</item>
-        <item>24,12.3,25</item>
-        <item>@string/parque_aguas</item>
-        <item>10,4.9,18</item>
-        <item>@string/huaca_pucllana</item>
-        <item>16,8.0,25</item>
-        <item>@string/huaca_huallamarca</item>
-        <item>12,5.8,18</item>
-    </string-array>
-
 
 </resources>

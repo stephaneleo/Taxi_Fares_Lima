@@ -1,23 +1,28 @@
 package com.example.android.taxi_fares_lima;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import java.util.Locale;
 
 
 public class ResponseFragment extends Fragment {
     final static int START_FEE = 4;
     final static double PER_KM_UNDER_5 = 1.2;
     final static double PER_KM_UNDER_10 = 1.8;
-    final static double PER_KM_OVER_10 = 2.5;
-    final static double USDPEN = 3.12;
-    final static double EURPEN = 3.45;
+    final static double PER_KM_OVER_10 = 2.4;
+    final static double USDPEN = 3.12; //todo : fetch them periodically
+    final static double EURPEN = 3.45; //todo : fetch them periodically
     TextView min_rate_value;
     TextView max_rate_value;
     TextView distance_value;
@@ -29,9 +34,6 @@ public class ResponseFragment extends Fragment {
     SharedPreferences.OnSharedPreferenceChangeListener listener;
     String current_currency;
 
-    //public ResponseFragment() {
-    //    setHasOptionsMenu(true);
-    //}
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -105,32 +107,30 @@ public class ResponseFragment extends Fragment {
                     current_max_rate = Double.parseDouble(max_rate_value.getText().toString());}
                 catch(NumberFormatException|NullPointerException e) {};
 
-                Log.w("shared pref", new_cur + current_currency);
-
                 if (current_min_rate != 0.0) {
                     if (new_cur.equals("USD") && current_currency.equals("EUR"))
-                    {min_rate_value.setText(String.format("%.1f",current_min_rate*EURPEN/USDPEN));
-                        max_rate_value.setText(String.format("%.1f",current_max_rate*EURPEN/USDPEN));
+                    {min_rate_value.setText(String.format(Locale.ENGLISH,"%.1f",current_min_rate*EURPEN/USDPEN));
+                        max_rate_value.setText(String.format(Locale.ENGLISH,"%.1f",current_max_rate*EURPEN/USDPEN));
                     }
                     else if (new_cur.equals("EUR") && current_currency.equals("USD"))
-                    {min_rate_value.setText(String.format("%.1f",current_min_rate/EURPEN*USDPEN));
-                        max_rate_value.setText(String.format("%.1f",current_max_rate/EURPEN*USDPEN));
+                    {min_rate_value.setText(String.format(Locale.ENGLISH,"%.1f",current_min_rate/EURPEN*USDPEN));
+                        max_rate_value.setText(String.format(Locale.ENGLISH,"%.1f",current_max_rate/EURPEN*USDPEN));
                     }
                     else if (new_cur.equals("USD") && current_currency.equals("PEN"))
-                    {min_rate_value.setText(String.format("%.1f",current_min_rate/USDPEN));
-                        max_rate_value.setText(String.format("%.1f",current_max_rate/USDPEN));
+                    {min_rate_value.setText(String.format(Locale.ENGLISH,"%.1f",current_min_rate/USDPEN));
+                        max_rate_value.setText(String.format(Locale.ENGLISH,"%.1f",current_max_rate/USDPEN));
                     }
                     else if (new_cur.equals("PEN") && current_currency.equals("USD"))
-                    {min_rate_value.setText(String.format("%.1f",current_min_rate*USDPEN));
-                        max_rate_value.setText(String.format("%.1f",current_max_rate*USDPEN));
+                    {min_rate_value.setText(String.format(Locale.ENGLISH,"%.1f",current_min_rate*USDPEN));
+                        max_rate_value.setText(String.format(Locale.ENGLISH,"%.1f",current_max_rate*USDPEN));
                     }
                     else if (new_cur.equals("EUR") && current_currency.equals("PEN"))
-                    {min_rate_value.setText(String.format("%.1f",current_min_rate/EURPEN));
-                        max_rate_value.setText(String.format("%.1f",current_max_rate/EURPEN));
+                    {min_rate_value.setText(String.format(Locale.ENGLISH,"%.1f",current_min_rate/EURPEN));
+                        max_rate_value.setText(String.format(Locale.ENGLISH,"%.1f",current_max_rate/EURPEN));
                     }
                     else if (new_cur.equals("PEN") && current_currency.equals("EUR"))
-                    {min_rate_value.setText(String.format("%.1f",current_min_rate*EURPEN));
-                        max_rate_value.setText(String.format("%.1f",current_max_rate*EURPEN));
+                    {min_rate_value.setText(String.format(Locale.ENGLISH,"%.1f",current_min_rate*EURPEN));
+                        max_rate_value.setText(String.format(Locale.ENGLISH,"%.1f",current_max_rate*EURPEN));
                     }
                 }
 
@@ -156,6 +156,10 @@ public class ResponseFragment extends Fragment {
 
         prefs.registerOnSharedPreferenceChangeListener(listener);
 
+        Bundle arguments = getArguments();
+        if (arguments != null) {
+            setHasOptionsMenu(true);
+        }
 
         return rootView;
     }
@@ -170,9 +174,9 @@ public class ResponseFragment extends Fragment {
         double distance_double = Double.parseDouble(distance);
         double duration_double = Double.parseDouble(duration);
 
-        distance = String.format("%.1f", distance_double);
-        duration_min = String.format("%.0f", duration_double*0.95);
-        duration_max = String.format("%.0f", duration_double*1.25);
+        distance = String.format(Locale.ENGLISH,"%.1f", distance_double);
+        duration_min = String.format(Locale.ENGLISH,"%.0f", duration_double*0.95);
+        duration_max = String.format(Locale.ENGLISH,"%.0f", duration_double*1.25);
         duration = duration_min + "-" + duration_max;}
 
         catch (NumberFormatException|NullPointerException e) {
@@ -205,8 +209,8 @@ public class ResponseFragment extends Fragment {
 
         double min_rate_double = rate_double*0.95;
         double max_rate_double = rate_double*1.2;
-        String min_rate = String.format("%.1f", min_rate_double);
-        String max_rate = String.format("%.1f", max_rate_double);
+        String min_rate = String.format(Locale.ENGLISH,"%.1f", min_rate_double);
+        String max_rate = String.format(Locale.ENGLISH,"%.1f", max_rate_double);
 
 
         min_rate_value.setText(min_rate);
@@ -241,5 +245,25 @@ public class ResponseFragment extends Fragment {
         outState.putString("duration", duration_value.getText().toString());
         outState.putString("from", from_value.getText().toString());
         outState.putString("to", to_value.getText().toString());
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_main, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        if (id == R.id.preferences) {
+            Intent intent = new Intent(getActivity().getApplicationContext(), MyPreferenceActivity.class);
+            startActivity(intent);
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
