@@ -14,6 +14,8 @@ public class MainActivity extends ActionBarActivity implements MainFragment.OnCa
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.mipmap.ic_launcher);
         setContentView(R.layout.activity_main);
 
         if (findViewById(R.id.response_container) != null) {

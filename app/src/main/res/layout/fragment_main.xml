@@ -43,7 +43,8 @@
             android:layout_marginBottom="@dimen/margin_bottom_top_first_inner_box"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="@dimen/margin_bottom_top_first_inner_box" />
+            android:layout_marginTop="@dimen/margin_bottom_top_first_inner_box"
+            />
 
 
         <AutoCompleteTextView
@@ -95,7 +96,8 @@
             android:layout_marginBottom="@dimen/margin_bottom_top_first_inner_box"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="@dimen/margin_bottom_top_first_inner_box" />
+            android:layout_marginTop="@dimen/margin_bottom_top_first_inner_box"
+            />
 
 
         <AutoCompleteTextView

@@ -7,6 +7,10 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v4.widget.SimpleCursorAdapter;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -41,8 +45,9 @@ import java.util.List;
 import java.util.Locale;
 
 
-public class MainFragment extends Fragment implements AsyncResponse {
+public class MainFragment extends Fragment implements AsyncResponse, LoaderManager.LoaderCallbacks<Cursor> {
 
+    public static final int SPINNER_LOADER = 0; // Loader identifier for populating spinners
     // These indices are tied to RATE_COLUMNS_PROJECTION.  If RATE_COLUMNS changes, these
     // must change.
     static final int COLNR_RATE_ID = 0;
@@ -55,22 +60,20 @@ public class MainFragment extends Fragment implements AsyncResponse {
     static final int COLNR_POI_NAME_ES = 1;
     static final int COLNR_POI_NAME_EN = 2;
     static final int COLNR_POI_ADDRESS = 3;
-
     final static double DURATION_FACTOR = 1;
-
     final static String LOG_TAG = "MainFragment";
-
     private static final String API_KEY = "AIzaSyCHF6yn8iOPhT9G8LzcVaO9JO_1uD5ICvA";
     private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
     private static final String TYPE_AUTOCOMPLETE = "/autocomplete";
     private static final String OUT_JSON = "/json";
     private static final String GMAPS_BASE = "http://maps.googleapis.com/maps/api/directions/json?";
-
+    SimpleCursorAdapter simpleCursorAdapter;
     Spinner origin_spinner;
     Spinner destination_spinner;
     AutoCompleteTextView autoCompView1;
     AutoCompleteTextView autoCompView2;
     Context myC;
+    String lan;
     OnCalculatedListener mCallback;
     private List<String> poi;
     private String from_used = "";
@@ -143,7 +146,12 @@ public class MainFragment extends Fragment implements AsyncResponse {
         // Add this line in order for this fragment to handle menu events.
         setHasOptionsMenu(true);
         myC = getActivity().getApplicationContext();
+
+        lan = Locale.getDefault().getLanguage();
+
+
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -151,7 +159,7 @@ public class MainFragment extends Fragment implements AsyncResponse {
 
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        poi = getPoiList();
+        getLoaderManager().initLoader(SPINNER_LOADER, null, this);
 
         if(savedInstanceState!=null)
         {
@@ -219,14 +227,14 @@ public class MainFragment extends Fragment implements AsyncResponse {
             }
         });
 
+        String[] from_columns;
+        if (lan.equals("es")) {from_columns = new String[] {TaxiContract.PoiEntry.COLUMN_NAME_ES}; }
+        else {from_columns = new String[] {TaxiContract.PoiEntry.COLUMN_NAME_EN}; }
 
-        ArrayAdapter<String> stringArrayAdapter= new ArrayAdapter<String>(
-                myC,
-                R.layout.spinner_item,
-                poi) ;
+        simpleCursorAdapter = new SimpleCursorAdapter(myC, R.layout.spinner_item, null, from_columns, new int[] { R.id.spinnerrij }, 0);
 
-        origin_spinner.setAdapter(stringArrayAdapter);
-        destination_spinner.setAdapter(stringArrayAdapter);
+        origin_spinner.setAdapter(simpleCursorAdapter);
+        destination_spinner.setAdapter(simpleCursorAdapter);
 
         origin_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -307,8 +315,22 @@ public class MainFragment extends Fragment implements AsyncResponse {
                     String rate_to_pass = null;
                     String distance_to_pass = null;
                     String duration_to_pass = null;
-                    String from_to_pass = origin_spinner.getSelectedItem().toString();
-                    String to_to_pass = destination_spinner.getSelectedItem().toString();
+                    String from_to_pass;
+                    String to_to_pass;
+
+                    if (lan.equals("es")){
+                        Cursor cursor1 = (Cursor) origin_spinner.getSelectedItem();
+                        from_to_pass = cursor1.getString(COLNR_POI_NAME_ES);
+                        Cursor cursor2 = (Cursor) destination_spinner.getSelectedItem();
+                        to_to_pass = cursor2.getString(COLNR_POI_NAME_ES);
+                    }
+                    else {
+                        Cursor cursor1 = (Cursor) origin_spinner.getSelectedItem();
+                        from_to_pass = cursor1.getString(COLNR_POI_NAME_EN);
+                        Cursor cursor2 = (Cursor) destination_spinner.getSelectedItem();
+                        to_to_pass = cursor2.getString(COLNR_POI_NAME_EN);
+                    }
+
 
                     if (cursor.moveToFirst()) {
                         do {
@@ -319,7 +341,6 @@ public class MainFragment extends Fragment implements AsyncResponse {
                         } while (cursor.moveToNext());
                     }
                     cursor.close();
-
 
                     // Send the event to the host activity if in 2 panes
                     mCallback.onCalculated(rate_to_pass, distance_to_pass, duration_to_pass, from_to_pass, to_to_pass);
@@ -370,6 +391,7 @@ public class MainFragment extends Fragment implements AsyncResponse {
                     + " must implement OnHeadlineSelectedListener");
         }
     }
+
 
     private void get_google_places(String from, String to) {
 
@@ -461,45 +483,32 @@ public class MainFragment extends Fragment implements AsyncResponse {
         } else {destination_spinner.setBackgroundColor(getResources().getColor(R.color.white));}
     }
 
-    // get the points of interest from database table
-    private List<String> getPoiList() {
-
-        List<String> result = new ArrayList<String>();
-        result.add(getText(R.string.spinner_header).toString());
+    @Override
+    public Loader<Cursor> onCreateLoader(int id, Bundle args)
+    {
 
         Uri uri = TaxiContract.PoiEntry.buildBasicPoiUri();
 
-        Cursor cursor = myC.getContentResolver().query(
-                uri,   // The content URI -> indicates which provider/db/table to use
-                TaxiContract.PoiEntry.COLUMNS,                        // The columns to return for each row
-                null,                    // Selection criteria
-                null,                     // Selection criteria
-                null);                        // The sort order for the returned rows
-
-        String poi_name = null;
-
-        String lan = Locale.getDefault().getLanguage();
-
         if (lan.equals("es")) {
-            if (cursor.moveToFirst()) {
-                do {
-                    poi_name = cursor.getString(COLNR_POI_NAME_ES);
-                    result.add(poi_name);
-
-                } while (cursor.moveToNext());
-            }
-        } else {
-            if (cursor.moveToFirst()) {
-                do {
-                    poi_name = cursor.getString(COLNR_POI_NAME_EN);
-                    result.add(poi_name);
-
-                } while (cursor.moveToNext());
-            }
+                Log.w("", "sppppppp");
+                return new CursorLoader(myC, uri, new String[]{TaxiContract.PoiEntry._ID , TaxiContract.PoiEntry.COLUMN_NAME_ES} , null, null, null);
         }
+        else {
+            Log.w("", "ennnn");
+            return new CursorLoader(myC, uri, new String[]{TaxiContract.PoiEntry._ID, TaxiContract.PoiEntry.COLUMN_NAME_EN} , null, null, null);
+        }
+    }
 
-        cursor.close();
-        return result;
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data)
+    {
+        simpleCursorAdapter.swapCursor(data);
+    }
+
+    @Override
+    public void onLoaderReset(Loader<Cursor> loader)
+    {
+        simpleCursorAdapter.swapCursor(null);
     }
 
     // get the exact address given an id of a point of interest
