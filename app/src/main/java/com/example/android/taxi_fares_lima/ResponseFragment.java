@@ -21,8 +21,8 @@ public class ResponseFragment extends Fragment {
     final static double PER_KM_UNDER_5 = 1.2;
     final static double PER_KM_UNDER_10 = 1.8;
     final static double PER_KM_OVER_10 = 2.4;
-    final static double USDPEN = 3.12; //todo : fetch them periodically
-    final static double EURPEN = 3.45; //todo : fetch them periodically
+    final static double USDPEN = 3.08; //todo : fetch them periodically
+    final static double EURPEN = 3.4; //todo : fetch them periodically
     TextView min_rate_value;
     TextView max_rate_value;
     TextView distance_value;

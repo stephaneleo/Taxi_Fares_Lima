@@ -25,18 +25,11 @@ public class TaxiContract {
 
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_POI).build();
-
-        public static final String CONTENT_TYPE =
-                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_POI;
-        public static final String CONTENT_ITEM_TYPE =
-                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_POI;
-
         // Table name
-        public static final String TABLE_NAME = "poi";
-        public static final String COLUMN_NAME_ES = "name_es";
-        public static final String COLUMN_NAME_EN = "name_en";
-        public static final String COLUMN_ADDRESS = "address";
-
+        public static final String TABLE_NAME = "poi";        public static final String COLUMN_NAME_ES = "name_es";public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_POI;
+                public static final String COLUMN_NAME_EN = "name_en";                public static final String COLUMN_ADDRESS = "address";public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_POI;
         public static final String[] COLUMNS = {_ID, COLUMN_NAME_ES, COLUMN_NAME_EN, COLUMN_ADDRESS};
 
         public static Uri buildBasicPoiUri() {
@@ -49,6 +42,14 @@ public class TaxiContract {
 
         public static String getIDSettingFromUri(Uri uri) {
             return uri.getPathSegments().get(1); } //segment correct ???
+
+
+
+
+
+
+
+
     }
 
     /* Inner class that defines the table contents of the rate table */
@@ -56,22 +57,15 @@ public class TaxiContract {
 
         public static final Uri CONTENT_URI =
                 BASE_CONTENT_URI.buildUpon().appendPath(PATH_RATE).build();
-
-        public static final String CONTENT_TYPE =
-                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_RATE;
-        public static final String CONTENT_ITEM_TYPE =
-                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_RATE;
-
         public static final String TABLE_NAME = "rate";
-
-        public static final String COLUMN_FROM_ID = "from_id"; //foreign key
-        public static final String COLUMN_TO_ID = "to_id"; //foreign key
-        public static final String COLUMN_RATE = "rate";
+        public static final String COLUMN_FROM_ID = "from_id";        public static final String CONTENT_TYPE =
+                ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_RATE;
+        public static final String COLUMN_TO_ID = "to_id";
+        public static final String COLUMN_RATE = "rate";        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_RATE;
         public static final String COLUMN_DIST = "dist";
         public static final String COLUMN_DUR = "dur";
-
         public static final String[] COLUMNS = {_ID, COLUMN_FROM_ID, COLUMN_TO_ID, COLUMN_RATE, COLUMN_DIST, COLUMN_DUR};
-
 
         public static Uri buildBasicRateUri() {
             return CONTENT_URI;
@@ -81,41 +75,11 @@ public class TaxiContract {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
 
-        ///////////////////////////////////////////
 
-        /*
 
-        public static Uri buildWeatherLocation(String locationSetting) {
-            return CONTENT_URI.buildUpon().appendPath(locationSetting).build();
-        }
 
-        public static Uri buildWeatherLocationWithStartDate(
-                String locationSetting, long startDate) {
-            long normalizedDate = normalizeDate(startDate);
-            return CONTENT_URI.buildUpon().appendPath(locationSetting)
-                    .appendQueryParameter(COLUMN_DATE, Long.toString(normalizedDate)).build();
-        }
 
-        public static Uri buildWeatherLocationWithDate(String locationSetting, long date) {
-            return CONTENT_URI.buildUpon().appendPath(locationSetting)
-                    .appendPath(Long.toString(normalizeDate(date))).build();
-        }
 
-        public static String getLocationSettingFromUri(Uri uri) {
-            return uri.getPathSegments().get(1);
-        }
-
-        public static long getDateFromUri(Uri uri) {
-            return Long.parseLong(uri.getPathSegments().get(2));
-        }
-
-        public static long getStartDateFromUri(Uri uri) {
-            String dateString = uri.getQueryParameter(COLUMN_DATE);
-            if (null != dateString && dateString.length() > 0)
-                return Long.parseLong(dateString);
-            else
-                return 0;
-        }*/
     }
 
 

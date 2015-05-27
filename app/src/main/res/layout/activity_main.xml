@@ -1,11 +1,4 @@
 
-<!-- Dummy item to prevent AutoCompleteTextView from receiving focus
-<LinearLayout
-    android:focusable="true"
-    android:focusableInTouchMode="true"
-    android:layout_width="0px"
-    android:layout_height="0px"
-    xmlns:android="http://schemas.android.com/apk/res/android" /> -->
 
 
 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
