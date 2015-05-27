@@ -9,7 +9,7 @@
     </string-array>
 
     <string-array
-        name="currencylistvalues">
+        name="currencylistvalues" translatable="false">
         <item>PEN</item>
         <item>USD</item>
         <item>EUR</item>
