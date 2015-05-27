@@ -1,0 +1,9 @@
+Lima is Peru's capital, has about 9 million inhabitants and is visited yearly by over 3 million foreigners. 
+Its taxi system is highly informal. Prices are set by negotiating the rate before a ride. Locals know the acceptable price for a given ride. Visitors, however, do not. This leads to unpleasant situations and excessive prices for tourists. To reduce this information asymmetry and its consequences, the app returns an estimated fair market price (and distance, and duration) for a given taxi ride within Lima.
+
+When an internet connection is available, the user can select any address in Lima as origin or destination. Addresses are completed and validated through Google Places API Autocomplete. When addresses have been selected, the route is calculated through the Google Directions API, and the rate estimated through a formula. 
+
+The app also partially works offline, thanks to a small shipped database containing the necessary information for routes between the 10 most common touristic hotspots within Lima.
+
+Settings allow for picking the desired currency. The app's default language is English. Spanish is activated on phones with a Spanish language Locale. 
+
