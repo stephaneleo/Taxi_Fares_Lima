@@ -1,0 +1,34 @@
+<resources>
+    <string name="app_name">&#160;Tarifas Taxi Lima</string>
+
+    <string name="origin_title">DE</string>
+    <string name="destination_title">A</string>
+    <string name="address_hint">&#8230; o ingrese una dirección</string>
+    <string name="enter_an_address">&#8230; o ingrese una dirección</string>
+
+
+    <string name="spinner_header">Escoja punto turístico &#8230;</string>
+
+    <string name="connection_toast">Conexión necesaria para ingresar direcciones exactas</string>
+    <string name="diff_points_toast">Seleccione puntos diferentes</string>
+    <string name="select_toast">Seleccione trayecto</string>
+
+
+    <string name="min_rate_header_string">normal</string>
+    <string name="max_rate_header_string">hora pico - noche</string>
+
+    <string name="get_rate_button_text">Calcula tarifa --></string>
+    <string name="duration_header_string">Duración</string>
+    <string name="distance_header_string">Distancia</string>
+    <string name="normal_rate_header_string">Tarifa</string>
+    <string name="from_header_string">De &#8230;</string>
+    <string name="to_header_string">A &#8230;</string>
+    <string name="preferences_string">Preferencias</string>
+    <string name="choose_currency">Elegir moneda</string>
+    <string name="currency_title">Moneda</string>
+
+    <string name="PEN">Soles Peruanos</string>
+    <string name="USD">Dólares</string>
+    <string name="EUR">Euros</string>
+
+</resources>
